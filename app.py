@@ -28,6 +28,7 @@ class Repo(db.Model):
     __tablename__ = 'repo'
 
     id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'))
     name = db.Column(db.String())
     doi = db.Column(db.String())
     contact_info = db.Column(db.String())
