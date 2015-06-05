@@ -1,4 +1,5 @@
 Flask
+Flask-SocketIO
 Flask-SQLAlchemy
 Jinja2
 SQLAlchemy

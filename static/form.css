@@ -39,8 +39,12 @@
     background-color: #6699FF;
 }
 
-a,  .fa-spinner {
+a, .fa-spinner {
     color: #6699FF;
+}
+
+.circle-o-notch {
+    color: white;
 }
 
 body {
@@ -55,4 +59,9 @@ body {
     max-width: 350px;
     /* If max-width does not work, try using width instead */
     width: 350px;
+}
+
+.tiny {
+    font-size: 9px;
+    top: -10px;
 }

@@ -1,15 +1,32 @@
-from flask import Flask, render_template
-from flask.ext.sqlalchemy import SQLAlchemy
 import os
+
+from flask import Flask, render_template
+from flask.ext.socketio import SocketIO, emit
+from flask.ext.sqlalchemy import SQLAlchemy
+
+from contact import get_contact
+from utils import get_repo_info
+
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
+socketio = SocketIO(app)
 
 
 @app.route('/<owner>/<repo>')
 def index(owner, repo):
     return render_template('form.html', owner=owner, repo=repo)
+
+
+@socketio.on('get info', namespace="/badge")
+def get_info(message):
+    # Message contains repo, owner, token keys
+    repo_info = get_repo_info(message["owner"], message["repo"])
+    return_message = {
+        "contact": get_contact(message["owner"], repo_info)
+    }
+    emit('info', return_message)
 
 
 class Owner(db.Model):
@@ -46,4 +63,4 @@ class Repo(db.Model):
 
 
 if __name__ == '__main__':
-    app.run()
+    socketio.run(app);

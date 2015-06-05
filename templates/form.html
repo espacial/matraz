@@ -1,10 +1,10 @@
-{% macro table_row(name, id, title) -%}
-    <tr>
-        <td><span class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></span></td>
-        <td class="text-right"><big>{{name}}</big></td>
-        <td><input type="text" class="form-control input-sm" id="{{id}}" disabled></td>
-        <td><button type="button" class="btn btn-info btn-sm btn-{{id}}" data-toggle="tooltip" data-placement="right" title="{{title}}"><b>?</b></button></td>
-    </tr>
+{% macro table_row(name, id) -%}
+    <td><span class="fa fa-spinner circle-o-notch fa-2x fa-{{id}}" aria-hidden="true"></span></td>
+    <td class="text-right"><big>{{name}}</big></td>
+    <td><input type="text" class="form-control input-sm" id="{{id}}" disabled></td>
+{%- endmacro %}
+{% macro tooltip(title) -%}
+    <td>{% if title %}<button type="button" class="btn btn-info btn-sm btn-{{id}}" data-html="true" data-toggle="tooltip" data-placement="right" title="{{title|safe}}"><b>?</b></button>{% endif %}</td>
 {%- endmacro %}
 <html>
     <head>
@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+        <script src="https://cdn.lukej.me/socket.io-client/0.9.16/socket.io.min.js"></script>
         <script src="{{ url_for('static', filename='form.js') }}"></script>
     </head>
     <body>
@@ -26,15 +26,53 @@
                         <div class="centering">
                             <div class="row-fluid">
                                 <div class="col-lg-12">
-                                    <h2 class="text-center">Get a badge for: <a href="http://www.github.com/{{owner}}/{{repo}}">{{owner}}/{{repo}}</a></h2>
-                                    
+                                    <h2 class="text-center">Get a badge for: <a href="http://www.github.com/{{owner}}/{{repo}}" target="_blank">{{owner}}/{{repo}}</a></h2>
+
                                     <br/>
+                                    <div class="well">
+                                        <h4>Copy here your Zenodo token:</h4>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-sm" id="zenodo_token">
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-sm btn-success submit">Submit</button>
+                                            </span>
+                                        </div>
+                                        <br/>
+                                        If you don't know what a token is or don't have a token yet, create a new one <a href="https://zenodo.org/account/settings/applications/tokens/new/" target="_blank"> here</a>
+                                    </div>
+
+
                                     <table class="table table-responsive borderless">
                                        <tbody>
-                                           {{table_row("DOI: ", "doi", "")}}
-                                           {{table_row("License: ", "license", "")}}
-                                           {{table_row("Documentation: ", "docs", "")}}
-                                           {{table_row("Contact info: ", "contact", "If the repository belongs to an organization, the contact information will be a link to the repository's Github issues page. If you can't see any contact information here and you are the owner of the repository, please enable issues.")}}
+                                            <tr>
+                                              {{table_row("DOI: ", "doi")}}
+                                              <td></td>
+                                            </tr>
+                                            <tr>
+                                              <td></td><td></td>
+                                              <td>
+                                                <div class="tiny">If your code doesn't have a DOI, check <a href="https://guides.github.com/activities/citable-code/" target="_blank">https://guides.github.com/activities/citable-code/</a></div>
+                                              </td>
+                                              <td></td>
+                                            </tr>
+                                            <tr>
+                                              {{table_row("License: ", "license")}}
+                                              <td></td>
+                                            </tr>
+                                            <tr>
+                                              <td></td><td></td>
+                                              <td>
+                                                <div class="tiny">If the license was not autodiscovered, check <a href="http://www.addalicense.com" target="_blank">http://www.addalicense.com</a></div>
+                                              </td>
+                                              <td></td>
+                                            </tr>
+                                            <tr>
+                                              {{table_row("Documentation: ", "docs")}}
+                                              <td></td>
+                                            </tr>
+                                            <tr>
+                                              {{table_row("Contact info: ", "contact")}}
+                                              {{tooltip("If the repository belongs to an organization, the contact information will be a link to the repository's Github issues page. If you can't see any contact information here and you are the owner of the repository, please enable issues.")}}
                                        </tbody>
                                     </table>
 
@@ -48,6 +86,7 @@
                                     </div>
 
                                     <p/>
+
                                 </div>
                             </div>
                         </div>
