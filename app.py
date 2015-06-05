@@ -5,6 +5,8 @@ from flask.ext.socketio import SocketIO, emit
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from contact import get_contact
+from doi import get_doi
+from license import get_license
 from utils import get_repo_info
 
 
@@ -19,12 +21,15 @@ def index(owner, repo):
     return render_template('form.html', owner=owner, repo=repo)
 
 
-@socketio.on('get info', namespace="/badge")
+@socketio.on('get_info', namespace="/badge")
 def get_info(message):
     # Message contains repo, owner, token keys
     repo_info = get_repo_info(message["owner"], message["repo"])
     return_message = {
-        "contact": get_contact(message["owner"], repo_info)
+        "contact": get_contact(message["owner"], repo_info),
+        "license": get_license(message["owner"], repo_info),
+        "doi": get_doi('https://github.com/%s/%s' % (message["owner"],
+                       message["repo"]), message["token"])
     }
     emit('info', return_message)
 

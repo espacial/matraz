@@ -7,7 +7,7 @@ def get_doi(repo_url, access_token):
     Parameters
     ----------
     :param repo_url: string
-        Url in from of 'https://github.com/[owner]/[repo] . Don't add 'www'
+        Url in from of 'https://github.com/[owner]/[repo]' . Don't add 'www'
         in front of 'github.com'.
 
     :param access_token: string
@@ -30,8 +30,10 @@ def get_doi(repo_url, access_token):
 
     for upload in content:
         try:
-            print upload['metadata']['related_identifiers']
-            if any(x['identifier'].startswith(repo_url)
+            print repo_url
+            print upload['metadata']['related_identifiers'][0]['identifier'].lower()
+            print upload['metadata']['related_identifiers'][0]['identifier'].lower().startswith(repo_url)
+            if any(x['identifier'].lower().startswith(repo_url.lower())
                    for x in upload['metadata']['related_identifiers']):
                 return upload['doi'], upload['doi_url']
         except KeyError:

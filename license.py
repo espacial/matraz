@@ -1,4 +1,4 @@
-def get_license(owner, repo):
+def get_license(owner, repo_info):
 
     licenses = {
       "agpl-3.0": {
@@ -63,10 +63,8 @@ def get_license(owner, repo):
       }
     }
 
-    # A line for request
-
     try:
-        license = licenses[response['license']['key']]
-        return license['name'], license['url']
+        license = licenses[repo_info['license']['key']]
+        return repo_info['license']['name'], repo_info['license']['url']
     except KeyError:
         return '', ''

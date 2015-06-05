@@ -12,7 +12,7 @@ def get_readme(owner, repo):
     try:
         r.raise_for_status()
         j = r.json()
-    except requests.exception.RequestException:
+    except requests.exceptions.RequestException:
         return ""
 
     return base64.decodestring(j[u'content'])
@@ -25,7 +25,7 @@ def get_contact_for_user(owner):
     try:
         r.raise_for_status()
         j = r.json()
-    except requests.exception.RequestException:
+    except requests.exceptions.RequestException:
         return ""
 
     return j['email']
@@ -33,19 +33,21 @@ def get_contact_for_user(owner):
 
 def get_contact_for_org(owner, repo_info):
 
-    if not repo_info['has_issues']:
-        contact = 'https://github.com/' + owner + '/' + repo + '/issues'
-        return contact
-    else:
-        import re
-
-        EMAIL_REGEX = re.compile('[^@\s]+@[^@\s]+\.[^@\s]+')
-        first_email = EMAIL_REGEX.search(get_readme(owner, repo))
-
-        if first_email:
-            return first_email.string[first_email.start():first_email.end()]
+    if repo_info:
+        if not repo_info['has_issues']:
+            contact = 'https://github.com/' + owner + '/' + repo + '/issues'
+            return contact
         else:
-            return ""
+            import re
+
+            EMAIL_REGEX = re.compile('[^@\s]+@[^@\s]+\.[^@\s]+')
+            first_email = EMAIL_REGEX.search(get_readme(owner, repo))
+
+            if first_email:
+                return first_email.string[first_email.start():first_email.end()]
+            else:
+                return ""
+    return ""
 
 
 def get_contact(owner, repo_info):

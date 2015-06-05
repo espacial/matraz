@@ -3,17 +3,31 @@ $( document ).ready(function() {
     var uri = null;
     var repo = null;
     var owner = null;
+    var current_message = null;
     var socket = io.connect('http://' + document.domain + ':' + 
                             location.port + '/badge');
     socket.on('info', function(msg) {
-        console.log(msg);
+        current_message = msg;
+        put_info('contact', current_message['contact']);
+        put_info('doi', current_message['doi'][0]);
+        put_info('license', current_message['license'][0]);
     });
+
+    var put_info = function(id, content){
+        $('.fa-' + id).removeClass('fa-spin fa-spinner fa-check circle-o-notch');
+        if(content){
+            $('.fa-' + id).addClass('fa-check');
+            $( "input#" + id ).val(content);
+        } else {
+            $('.fa-' + id).addClass('fa-remove');
+        }
+    }
 
     var reload_triggers = function(token) {
         $('.fa-2x').removeClass("circle-o-notch fa-check fa-remove");
         $('.fa-2x').addClass("fa-spinner fa-spin");
         // Here all the websocket thingies will be done!
-        socket.emit('get info', {repo: repo, owner: owner, token: token});
+        socket.emit('get_info', {repo: repo, owner: owner, token: token});
     };
 
     var split_uri = function() {
