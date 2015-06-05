@@ -1,0 +1,59 @@
+{% macro table_row(name, id, title) -%}
+    <tr>
+        <td><span class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></span></td>
+        <td class="text-right"><big>{{name}}</big></td>
+        <td><input type="text" class="form-control input-sm" id="{{id}}" disabled></td>
+        <td><button type="button" class="btn btn-info btn-sm btn-{{id}}" data-toggle="tooltip" data-placement="right" title="{{title}}"><b>?</b></button></td>
+    </tr>
+{%- endmacro %}
+<html>
+    <head>
+        <title>Get your own matraz badge!</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" media="all" />
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+        <script src="{{ url_for('static', filename='form.js') }}"></script>
+    </head>
+    <body>
+
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        <div class="centering">
+                            <div class="row-fluid">
+                                <div class="col-lg-12">
+                                    <h2 class="text-center">Get a badge for: <a href="http://www.github.com/{{owner}}/{{repo}}">{{owner}}/{{repo}}</a></h2>
+                                    
+                                    <br/>
+                                    <table class="table table-responsive borderless">
+                                       <tbody>
+                                           {{table_row("DOI: ", "doi", "")}}
+                                           {{table_row("License: ", "license", "")}}
+                                           {{table_row("Documentation: ", "docs", "")}}
+                                           {{table_row("Contact info: ", "contact", "If the repository belongs to an organization, the contact information will be a link to the repository's Github issues page. If you can't see any contact information here and you are the owner of the repository, please enable issues.")}}
+                                       </tbody>
+                                    </table>
+
+                                    <button type="button" class="btn btn-lg btn-success center-block">Refresh</button>
+
+                                    <br/>
+
+                                    <p><big>Your badge will be stored here:</big></p>
+                                    <div class="well">
+                                        <a href="{{ request.url }}/badge.svn">{{ request.url }}/badge.svn</a>
+                                    </div>
+
+                                    <p/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+              
+    </body>
+</html>

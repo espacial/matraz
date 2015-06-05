@@ -1,0 +1,58 @@
+.container-fluid, .row-fluid, .col-lg-6  {
+    height: 100%;
+}
+
+.col-lg-6 {
+    background: white;
+}
+
+.centering {
+  position: absolute;
+  top: 50%;
+  left:50%;
+  width: 90%;
+  background: #FFF;
+  transform: translate(-50%,-50%);
+}
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none;
+}
+
+.btn, .input-sm, .well, .tooltip-inner {
+    border-radius: 0;
+}
+
+.fa-check {
+    color: #66CC00;
+}
+
+.fa-remove {
+    color: #CC6600;
+}
+
+.btn-success{
+    background-color:  #66CC00;
+}
+
+.btn-info{
+    background-color: #6699FF;
+}
+
+a,  .fa-spinner {
+    color: #6699FF;
+}
+
+body {
+    background: url(https://s3.amazonaws.com/StartupStockPhotos/20140808_StartupStockPhotos/55.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.tooltip-inner {
+    max-width: 350px;
+    /* If max-width does not work, try using width instead */
+    width: 350px;
+}
