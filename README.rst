@@ -11,7 +11,7 @@ Firstly, install postgreSQL and create a DB. Then, write in your terminal:
 
 To create the tables, enter python and type:
 
-.. code-clok :: pycon
+.. code-block :: pycon
 
     >>> from app import db
     >>> db.create_all()
